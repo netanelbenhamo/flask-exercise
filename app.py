@@ -84,6 +84,16 @@ def userById(id):
     data = {"user": user}
     return create_response(data)
 
+@app.route("/users/<id>", methods = ['PUT'])
+def updateUserById(id):
+    user = db.getById("users", int(id) if id.isdigit() else id)
+    if user == None:
+        return create_response(None, 404, "doesn't exist a user with the provided id")
+    
+    bodyParams = request.json
+    updateUser = db.updateById("users", int(id) if id.isdigit() else id, bodyParams)
+    data = {"updatedUser": updateUser}
+    return create_response(data, 201, "user updated")
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
 """
