@@ -58,6 +58,14 @@ def users():
     data = {"users": users}
     return create_response(data)
 
+@app.route("/users/<id>")
+def userById(id):
+    user = db.getById("users", int(id) if id.isdigit() else id)
+    if user == None:
+        return create_response(None, 404, "doesn't exist a user with the provided id")
+    data = {"user": user}
+    return create_response(data)
+
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
 """
