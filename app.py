@@ -63,6 +63,19 @@ def users():
         data["users"] =  filteredUsers
     return create_response(data)
 
+@app.route("/users", methods = ['POST'])
+def addUser():
+    bodyParams = request.json
+    if "name" not in bodyParams:
+        return create_response(None, 422, "missing name")
+    if "age" not in bodyParams:
+        return create_response(None, 422, "missing age")
+    if "team" not in bodyParams:
+        return create_response(None, 422, "missing team")
+    
+    data = {"newUser": db.create("users", bodyParams)}
+    return create_response(data, 201, "new user entered")
+
 @app.route("/users/<id>")
 def userById(id):
     user = db.getById("users", int(id) if id.isdigit() else id)
