@@ -94,6 +94,16 @@ def updateUserById(id):
     updateUser = db.updateById("users", int(id) if id.isdigit() else id, bodyParams)
     data = {"updatedUser": updateUser}
     return create_response(data, 201, "user updated")
+
+@app.route("/users/<id>", methods = ['DELETE'])
+def deleteUserById(id):
+    user = db.getById("users", int(id) if id.isdigit() else id)
+    if user == None:
+        return create_response(None, 404, "doesn't exist a user with the provided id")
+    
+    db.deleteById("users", int(id) if id.isdigit() else id)
+    return create_response(None, 201, "user deleted successfully")
+
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
 """
