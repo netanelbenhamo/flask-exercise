@@ -148,3 +148,18 @@ def test_put_users_id_fail(client):
 
     res_message = res.json["message"]
     assert res_message == "doesn't exist a user with the provided id"
+
+#6
+def test_delete_user_id_success(client):
+    res = client.delete("/users/1")
+
+    assert res.status_code == 201
+    res_message = res.json["message"]
+    assert res_message == "user deleted successfully"
+
+def test_delete_user_id_fail(client):
+    res = client.delete("/users/6")
+
+    assert res.status_code == 404
+    res_message = res.json["message"]
+    assert res_message == "doesn't exist a user with the provided id"
