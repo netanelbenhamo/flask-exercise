@@ -109,3 +109,42 @@ def test_post_users_fail_team(client):
 
     res_message = res.json["message"]
     assert res_message == "missing team"
+
+#5
+def test_put_users_id_success(client):
+    data = {
+        "name": "helena2",
+        "age": 23,
+        "team": "C2TC"
+    }
+    res = client.put(
+        "/users/1",
+        data = json.dumps(data),
+        headers={"Content-Type": "application/json"}
+    )
+
+    assert res.status_code == 201
+
+    res_user = res.json["result"]["updatedUser"]
+    assert len(res_user) == 4
+    assert res_user["name"] == "helena2"
+    assert res_user["id"] == 1
+    assert res_user["team"] == "C2TC"
+    assert res_user["age"] == 23
+
+def test_put_users_id_fail(client):
+    data = {
+        "name": "helena2",
+        "age": 23,
+        "team": "C2TC"
+    }
+    res = client.put(
+        "/users/6",
+        data = json.dumps(data),
+        headers={"Content-Type": "application/json"}
+    )
+
+    assert res.status_code == 404
+
+    res_message = res.json["message"]
+    assert res_message == "doesn't exist a user with the provided id"
